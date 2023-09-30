@@ -1,5 +1,5 @@
 # Copyright 2023 parkminwoo, Apache 2.0 License
-
+# python setup.py sdist bdist_wheel , import pkg_resources
 import re
 from setuptools import find_packages
 from setuptools import setup
