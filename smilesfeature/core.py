@@ -4,8 +4,8 @@ import pandas as pd
 import joblib
 from rdkit import Chem
 from sklearn.cluster import DBSCAN
-from bigsmiles.processor.mol2vec_processor import sentences2vec, mol2vec_feature
-from bigsmiles.processor.smiles_processor import (
+from smilesfeature.processor.mol2vec_processor import sentences2vec, mol2vec_feature
+from smilesfeature.processor.smiles_processor import (
     add_molecule_from_smiles,
     smiles_to_fp,
     generate_3D_coordinates,
@@ -23,7 +23,7 @@ from bigsmiles.processor.smiles_processor import (
     interpolate_missing_values,
     extract_extra_features,
 )
-from bigsmiles.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
+from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 from gensim.models import Word2Vec
 
 

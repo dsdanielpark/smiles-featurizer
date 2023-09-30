@@ -9,7 +9,7 @@ from IPython.display import SVG
 from molfeat.trans.concat import FeatConcat
 from molfeat.trans.fp import FPVecTransformer
 import datamol as dm
-from bigsmiles.constant import (
+from smilesfeature.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,

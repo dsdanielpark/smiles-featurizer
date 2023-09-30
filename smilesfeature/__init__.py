@@ -1,6 +1,6 @@
 # Copyright 2023 Minwoo Park, Apache 2.0 License.
-from bigsmiles.processor.mol2vec_processor import sentences2vec, mol2vec_feature
-from bigsmiles.processor.smiles_processor import (
+from smilesfeature.processor.mol2vec_processor import sentences2vec, mol2vec_feature
+from smilesfeature.processor.smiles_processor import (
     add_molecule_from_smiles,
     smiles_to_fp,
     generate_3D_coordinates,
@@ -18,7 +18,7 @@ from bigsmiles.processor.smiles_processor import (
     interpolate_missing_values,
     extract_extra_features,
 )
-from bigsmiles.constant import (
+from smilesfeature.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,
