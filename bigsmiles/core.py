@@ -10,7 +10,7 @@ from bigsmiles.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 from gensim.models import Word2Vec
 
 
-def generate(df, method="simple"):
+def generate_features(df, method="simple"):
     mol2vec_model = Word2Vec.load("./mol2vel/model_300dim.pkl")
     # Preprocessing steps
     df = interpolate_missing_values(df)
@@ -60,10 +60,3 @@ def generate(df, method="simple"):
         df.drop(columns=['clogp', 'mw', 'tpsa'], inplace=True)
 
     return df
-
-if __name__ =="__main__":
-    df = pd.read_csv("./data/big_smiles.csv")
-    df_test = df[:10]
-    df_test = generate(df_test, method="simple")
-    df_test.to_csv("all.csv")
-
