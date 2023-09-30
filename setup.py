@@ -25,7 +25,7 @@ version = get_version()
 
 setup(
     name="smilesfeature",
-    version="0.1.1",
+    version="0.1.6",
     author="daniel park",
     author_email="parkminwoo1991@gmail.com",
     description="A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System).",
