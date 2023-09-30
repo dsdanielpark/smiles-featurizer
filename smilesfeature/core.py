@@ -1,36 +1,36 @@
+import os
 import re
 import numpy as np
 import pandas as pd
 import joblib
 from rdkit import Chem
 from sklearn.cluster import DBSCAN
+from gensim.models import Word2Vec
+import pkg_resources
 from smilesfeature.processor.mol2vec_processor import sentences2vec, mol2vec_feature
 from smilesfeature.processor.smiles_processor import (
     add_molecule_from_smiles,
     smiles_to_fp,
     generate_3D_coordinates,
     smiles_to_image_array,
-    perform_pca_on_column,
     add_all_descriptors,
     find_reactive_sites,
     count_reactive_sites,
     count_reaction_fragments,
     add_reactive_groups,
     generate_descriptor_functions,
-    apply_pca_to_dataframe
+    apply_pca_to_dataframe,
     add_chem_properties,
     expand_reaction_sites,
     generate_chemical_properties,
     interpolate_missing_values,
-    perform_pca_on_mol2vec
+    perform_pca_on_mol2vec,
     extract_extra_features,
 )
 from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
-from gensim.models import Word2Vec
-import os
-import pkg_resources
 
 data_path = pkg_resources.resource_filename('smilesfeature.data', 'model_300dim.pkl')
+
 
 def feature_generate(df, method="simple"):
     """
@@ -58,6 +58,7 @@ def feature_generate(df, method="simple"):
     mol2vec_model = Word2Vec.load(data_path)
     # Preprocessing steps
     df = interpolate_missing_values(df)
+    df = add_molecule_from_smiles(df)
     df["Mol"] = df["SMILES"].apply(Chem.MolFromSmiles)
     df = generate_chemical_properties(df)
 
@@ -81,8 +82,8 @@ def feature_generate(df, method="simple"):
     # Chemical Property steps
     df = add_reactive_groups(df)
     df = add_all_descriptors(df)
-    df["Reactive_Sites"] = df["Mol"].apply(find_reactive_sites)
-    df["Reactive_Sites_Count"] = df["Mol"].apply(count_reactive_sites)
+    df['Reactive_Sites'] = df['SMILES'].apply(lambda x: find_reactive_sites(Chem.MolFromSmiles(x)))
+    df["Reactive_Sites_Count"] = df["Molecule"].apply(count_reactive_sites)
     for site in [
         "Nitro_Reduction",
         "Carbonyl_Reduction",

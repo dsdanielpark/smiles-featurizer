@@ -372,9 +372,17 @@ def add_chem_properties(df: pd.DataFrame) -> pd.DataFrame:
     >>> updated_df = add_chem_properties(df)
     """
 
-    descriptor_fns = generate_descriptor_functions()
-    for desc, func in descriptor_fns.items():
-        df[desc] = df["SMILES"].apply(func)
+    # Create a list to store the calculated chemical properties
+    property_columns = []
+
+    # Calculate chemical properties for each SMILES string
+    for desc_name, desc_func in Descriptors.descList:
+        properties = df["Molecule"].apply(desc_func)
+        property_columns.append(pd.Series(properties, name=desc_name))
+
+    # Concatenate the chemical properties columns to the original DataFrame
+    df = pd.concat([df] + property_columns, axis=1)
+
     return df
 
 
@@ -394,23 +402,31 @@ def expand_reaction_sites(df: pd.DataFrame, max_pos: int = 30) -> pd.DataFrame:
     >>> updated_df = expand_reaction_sites(df)
     """
 
-    new_columns = [
-        f"{reaction}_{i}"
-        for reaction in df.loc[0, "Reactive_Sites"].keys()
-        for i in range(max_pos + 1)
-    ]
-    df_new = pd.DataFrame(columns=new_columns, index=df.index)
-    df_new.fillna(0, inplace=True)
-
-    for idx, row in df.iterrows():
-        for reaction, positions in row["Reactive_Sites"].items():
-            for pos_tuple in positions:
-                for pos in pos_tuple:
+    new_columns = []
+    for reaction in df.loc[0, 'Reactive_Sites'].keys():
+        for positions in df.loc[0, 'Reactive_Sites'][reaction]:
+            if isinstance(positions, list):  # Check if positions is a list
+                for pos in positions:
+                    if pos <= max_pos:
+                        new_columns.append(f"{reaction}_{pos}")
+            
+    df_new = pd.DataFrame(columns=new_columns)
+    if len(new_columns) > 0:
+        df_new.loc[0] = 0  # Initialize with zeros
+    for reaction, positions in df.loc[0, 'Reactive_Sites'].items():
+        for pos_tuple in positions:
+            if isinstance(pos_tuple, list):  # Check if pos_tuple is a list
+                pos = pos_tuple[0]  # Extract the position from the tuple
+                if pos <= max_pos:
                     col_name = f"{reaction}_{pos}"
-                    df_new.at[idx, col_name] = 1
-
+                    df_new.at[0, col_name] = 1
+                
     df = pd.concat([df, df_new], axis=1)
+    df.fillna(0, inplace=True)
     return df
+
+
+
 
 
 def generate_chemical_properties(df: pd.DataFrame) -> pd.DataFrame:

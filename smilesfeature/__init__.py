@@ -5,7 +5,6 @@ from smilesfeature.processor.smiles_processor import (
     smiles_to_fp,
     generate_3D_coordinates,
     smiles_to_image_array,
-    perform_pca_on_column,
     add_all_descriptors,
     find_reactive_sites,
     count_reactive_sites,
@@ -35,7 +34,6 @@ __all__ = [
     "smiles_to_fp",
     "generate_3D_coordinates",
     "smiles_to_image_array",
-    "perform_pca_on_column",
     "add_all_descriptors",
     "find_reactive_sites",
     "count_reactive_sites",
@@ -53,5 +51,5 @@ __all__ = [
     "perform_pca_on_mol2vec",
     "apply_pca_to_dataframe"
 ]
-__version__ = "0.1.11"
+__version__ = "0.1.15"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"
