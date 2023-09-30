@@ -26,8 +26,9 @@ from smilesfeature.processor.smiles_processor import (
 from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 from gensim.models import Word2Vec
 import os
-script_directory = os.path.dirname(os.path.realpath(__file__))
+import pkg_resources
 
+data_path = pkg_resources.resource_filename('smilesfeature.data', 'model_300dim.pkl')
 
 def feature_generate(df, method="simple"):
     """
@@ -52,7 +53,7 @@ def feature_generate(df, method="simple"):
         and chemical property calculation steps to generate derived features
         from the 'SMILES' column in the input DataFrame.
     """
-    mol2vec_model = Word2Vec.load(os.path.join(script_directory, "mol2vel/model_300dim.pkl"))
+    mol2vec_model = Word2Vec.load(data_path)
     # Preprocessing steps
     df = interpolate_missing_values(df)
     df["Mol"] = df["SMILES"].apply(Chem.MolFromSmiles)
