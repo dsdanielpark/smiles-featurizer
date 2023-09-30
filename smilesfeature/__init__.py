@@ -49,5 +49,5 @@ __all__ = [
     "REACTION_CLASSES_TO_SMART_FRAGMENTS",
     "DATAMOL_FEATURES",
 ]
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"
