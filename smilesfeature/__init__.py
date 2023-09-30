@@ -16,6 +16,8 @@ from smilesfeature.processor.smiles_processor import (
     expand_reaction_sites,
     generate_chemical_properties,
     interpolate_missing_values,
+    perform_pca_on_mol2vec,
+    apply_pca_to_dataframe,
     extract_extra_features,
 )
 from smilesfeature.core import feature_generate
@@ -48,6 +50,8 @@ __all__ = [
     "ALL_REACTIVE_SITES",
     "REACTION_CLASSES_TO_SMART_FRAGMENTS",
     "DATAMOL_FEATURES",
+    "perform_pca_on_mol2vec",
+    "apply_pca_to_dataframe"
 ]
-__version__ = "0.1.10"
+__version__ = "0.1.11"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"

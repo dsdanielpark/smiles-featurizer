@@ -17,10 +17,12 @@ from smilesfeature.processor.smiles_processor import (
     count_reaction_fragments,
     add_reactive_groups,
     generate_descriptor_functions,
+    apply_pca_to_dataframe
     add_chem_properties,
     expand_reaction_sites,
     generate_chemical_properties,
     interpolate_missing_values,
+    perform_pca_on_mol2vec
     extract_extra_features,
 )
 from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
@@ -70,8 +72,9 @@ def feature_generate(df, method="simple"):
             }
         )
     )
-    df = perform_pca_on_column(df, "3D_Coordinates")
-    df = perform_pca_on_column(df, "Mol2Vec")
+    df = apply_pca_to_dataframe(df, '3D_Coordinates')
+    df['Mol2Vec'] = df['Mol2Vec'].apply(lambda x: x.reshape(-1))
+    df = perform_pca_on_mol2vec(df, n_components=3)
     df["Mol2Vec_mean"] = df["Mol2Vec"].apply(np.mean)
     df["Mol2Vec_std"] = df["Mol2Vec"].apply(np.std)
 

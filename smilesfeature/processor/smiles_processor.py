@@ -106,38 +106,86 @@ def smiles_to_image_array(smiles: str) -> np.ndarray:
     image_array = np.array(img)
     return image_array
 
-
-def perform_pca_on_column(
-    df: pd.DataFrame, col_name: str, n_components: int = 3
-) -> pd.DataFrame:
+def _apply_pca(row, col_name):
     """
-    Perform PCA transformation on a specified column of the DataFrame and add new columns
-    for principal components.
+    Apply Principal Component Analysis (PCA) to a specific column in a DataFrame row.
 
-    Parameters:
-    - df (pd.DataFrame): The dataframe on which PCA needs to be performed.
-    - col_name (str): The column name on which PCA is to be applied.
-    - n_components (int, default=3): Number of principal components to retain.
+    Args:
+        row (pd.Series): The input DataFrame row.
+        col_name (str): The name of the column to apply PCA to.
 
     Returns:
-    - pd.DataFrame: DataFrame with PCA-transformed columns appended.
+        pd.Series: A Series containing the PCA-transformed values.
 
     Example:
-    >>> df = pd.DataFrame({"Mol2Vec": [np.array([1, 2, 3]), np.array([4, 5, 6])]})
-    >>> df_transformed = perform_pca_on_column(df, "Mol2Vec")
+        >>> import pandas as pd
+        >>> from sklearn.decomposition import PCA
+        >>> data = {'feature1': [1, 2, 3], 'feature2': [4, 5, 6]}
+        >>> df = pd.DataFrame(data)
+        >>> pca = PCA(n_components=3)
+        >>> sample_row = df.iloc[0]
+        >>> transformed_values = _apply_pca(sample_row, col_name='feature1')
+        >>> print(transformed_values)
     """
+    pca = PCA(n_components=3)
+    transformed = pca.fit_transform(row[col_name])
+    new_col_names = [f'{col_name}_pc{i+1}' for i in range(3)]
+    return pd.Series(transformed.mean(axis=0), index=new_col_names)
 
-    if col_name not in df.columns:
-        raise ValueError(f"'{col_name}' column must be present in the DataFrame.")
 
-    data_matrix = np.vstack(df[col_name].values)
+def apply_pca_to_dataframe(df, col_name):
+    """
+    Apply Principal Component Analysis (PCA) to a specific column in a DataFrame and add the PCA-transformed components as new columns.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        col_name (str): The name of the column to apply PCA to.
+
+    Returns:
+        pd.DataFrame: A DataFrame with PCA-transformed columns added.
+
+    Example:
+        >>> import pandas as pd
+        >>> from sklearn.decomposition import PCA
+        >>> data = {'feature1': [1, 2, 3], 'feature2': [4, 5, 6]}
+        >>> df = pd.DataFrame(data)
+        >>> df_pca = apply_pca_to_dataframe(df, col_name='feature1')
+        >>> print(df_pca.head())
+    """
+    new_columns = df.apply(lambda row: _apply_pca(row, col_name), axis=1)
+    return pd.concat([df, new_columns], axis=1)
+
+
+def perform_pca_on_mol2vec(df, n_components=3):
+    """
+    Perform Principal Component Analysis (PCA) on the 'Mol2Vec' column in a DataFrame and add the PCA-transformed components as new columns.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame with a 'Mol2Vec' column.
+        n_components (int, optional): The number of principal components to retain. Defaults to 3.
+
+    Returns:
+        pd.DataFrame: A DataFrame with PCA-transformed columns added.
+
+    Example:
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>> from sklearn.decomposition import PCA
+        >>> data = {'Mol2Vec': [np.random.rand(300) for _ in range(5)]}
+        >>> df = pd.DataFrame(data)
+        >>> df_pca = perform_pca_on_mol2vec(df, n_components=3)
+        >>> print(df_pca.head())
+    """
+    if 'Mol2Vec' not in df.columns:
+        raise ValueError("'Mol2Vec' column must be present in the DataFrame.")
+    mol2vec_matrix = np.vstack(df['Mol2Vec'].values)
     pca = PCA(n_components=n_components)
-    pca_result = pca.fit_transform(data_matrix)
-    new_col_names = [f"{col_name}_pc{i+1}" for i in range(n_components)]
+    pca_result = pca.fit_transform(mol2vec_matrix)
+    new_col_names = [f"Mol2Vec_pc{i+1}" for i in range(n_components)]
     df[new_col_names] = pd.DataFrame(pca_result, index=df.index)
-
     return df
 
+    
 
 def add_all_descriptors(df: pd.DataFrame) -> pd.DataFrame:
     """
