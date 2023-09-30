@@ -18,6 +18,7 @@ from smilesfeature.processor.smiles_processor import (
     interpolate_missing_values,
     extract_extra_features,
 )
+from smilesfeature.core import generate
 from smilesfeature.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
@@ -25,6 +26,7 @@ from smilesfeature.constant import (
 )
 
 __all__ = [
+    "generate",
     "sentences2vec",
     "mol2vec_feature",
     "add_molecule_from_smiles",
@@ -47,5 +49,5 @@ __all__ = [
     "REACTION_CLASSES_TO_SMART_FRAGMENTS",
     "DATAMOL_FEATURES",
 ]
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"

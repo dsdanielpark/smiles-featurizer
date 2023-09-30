@@ -27,7 +27,29 @@ from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 from gensim.models import Word2Vec
 
 
-def generate_features(df, method="simple"):
+def generate(df, method="simple"):
+    """
+    Generate derived variables from SMILES in a DataFrame.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame containing a 'SMILES' column.
+        method (str, optional): Method for feature generation. Defaults to "simple".
+
+    Returns:
+        pd.DataFrame: DataFrame with derived features added.
+
+    Example:
+        >>> import pandas as pd
+        >>> data = {'SMILES': ['CCO', 'C1=CC=CC=C1', 'CCC']}
+        >>> df = pd.DataFrame(data)
+        >>> result_df = generate(df, method='more')
+        >>> print(result_df.head())
+
+    Note:
+        This function performs a series of preprocessing, feature engineering,
+        and chemical property calculation steps to generate derived features
+        from the 'SMILES' column in the input DataFrame.
+    """
     mol2vec_model = Word2Vec.load("./mol2vel/model_300dim.pkl")
     # Preprocessing steps
     df = interpolate_missing_values(df)
