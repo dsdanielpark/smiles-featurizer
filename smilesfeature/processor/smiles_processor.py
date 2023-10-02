@@ -14,6 +14,9 @@ from smilesfeature.constant import (
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,
 )
+import pandas as pd
+from rdkit import Chem
+from rdkit.Chem import Descriptors
 
 
 def add_molecule_from_smiles(df: pd.DataFrame) -> pd.DataFrame:
@@ -516,4 +519,27 @@ def extract_extra_features(df: pd.DataFrame) -> pd.DataFrame:
     for i, col in enumerate(new_columns):
         df[col] = descriptors[:, i]
 
+    return df
+
+
+def add_descriptors_to_df(df: pd.DataFrame):
+    # Convert SMILES strings to mol objects and store them in a new column 'mol'
+    df["mol"] = df["SMILES"].apply(Chem.MolFromSmiles)
+    
+    # Compute all descriptors for all molecules in one go
+    df['dm_descriptor_dict'] = df["mol"].apply(dm.descriptors.compute_many_descriptors)
+    
+    # Create new columns for each descriptor and set them to None
+    for descriptor_name in df['dm_descriptor_dict'].iloc[0].keys():
+        df[descriptor_name] = None
+    
+    # Iterate over rows and set descriptor values
+    for index, row in df.iterrows():
+        dm_descriptor_dict = row['dm_descriptor_dict']
+        for descriptor_name, value in dm_descriptor_dict.items():
+            df.at[index, descriptor_name] = value
+    
+    # Drop the 'mol' and 'dm_descriptor_dict' columns if they are no longer needed
+    df.drop(['mol', 'dm_descriptor_dict'], axis=1, inplace=True)
+    
     return df

@@ -1,5 +1,10 @@
 # Copyright 2023 Minwoo Park, Apache 2.0 License.
-from smilesfeature.processor.mol2vec_processor import sentences2vec, mol2vec_feature
+from smilesfeature.processor.mol2vec_processor import (
+    calculate_and_add_ecfp_fingerprints,
+    calculate_and_add_maccs_fingerprints,
+    calculate_and_add_rdkit2d_descriptors,
+    mol2vec_feature,
+)
 from smilesfeature.processor.smiles_processor import (
     add_molecule_from_smiles,
     smiles_to_fp,
@@ -18,10 +23,12 @@ from smilesfeature.processor.smiles_processor import (
     perform_pca_on_mol2vec,
     apply_pca_to_dataframe,
     extract_extra_features,
+    add_descriptors_to_df,
 )
-from smilesfeature.core import feature_generate
-from smilesfeature.analysis.dash import create_dash_dashboard
-from smilesfeature.analysis.plotter import draw_corr, scatter_plot_dataframe
+from smilesfeature.core import generate_smiles_feature
+from smilesfeature.analysis.dash import create_inline_dash_dashboard
+from smilesfeature.analysis.plotter import draw_corr, df_scatter_plot
+from smilesfeature.model.lgbm_model import train_lgbm
 from smilesfeature.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
@@ -29,10 +36,14 @@ from smilesfeature.constant import (
 )
 
 __all__ = [
-    "scatter_plot_dataframe",
+    "add_descriptors_to_df"
+    "calculate_and_add_ecfp_fingerprints",
+    "calculate_and_add_maccs_fingerprints",
+    "calculate_and_add_rdkit2d_descriptors",
+    "df_scatter_plot",
     "draw_corr",
-    "create_dash_dashboard",
-    "feature_generate",
+    "create_inline_dash_dashboard",
+    "generate_smiles_feature",
     "sentences2vec",
     "mol2vec_feature",
     "add_molecule_from_smiles",

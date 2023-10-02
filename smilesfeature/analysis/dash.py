@@ -18,15 +18,17 @@ def array_to_base64(array):
     """
     fig, ax = plt.subplots()
     ax.imshow(array, cmap='gray')
+    ax.plot([-10, 10], [-10, 10], 'r--')  # Add y=x line
+    ax.axis('equal')  # Set aspect ratio to be equal
     ax.axis('off')
     buf = BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
     return base64.b64encode(buf.getvalue()).decode()
 
-def create_dash_dashboard(df, true_col, predicted_col):
+def create_inline_dash_dashboard(df, true_col, predicted_col):
     """
-    Create a Dash dashboard to visualize scatter plots and hover over points to view images.
+    Create an inline Dash dashboard to visualize scatter plots and hover over points to view images.
 
     Parameters:
         df (pandas.DataFrame): The input DataFrame containing data to visualize.
@@ -35,7 +37,7 @@ def create_dash_dashboard(df, true_col, predicted_col):
 
     Example:
         # Assuming df contains columns 'true_column_name', 'predicted_column_name', and 'image_array'.
-        >>> create_dash_dashboard(df, 'true_column_name', 'predicted_column_name')
+        >>> create_inline_dash_dashboard(df, 'true_column_name', 'predicted_column_name')
     """
     encoded_images = [array_to_base64(array) for array in df['image_array']]
 
@@ -43,7 +45,28 @@ def create_dash_dashboard(df, true_col, predicted_col):
     app.layout = html.Div([
         dcc.Graph(
             id='scatter-plot',
-            figure=px.scatter(x=df[true_col], y=df[predicted_col], labels={'x':'True Values', 'y':'Predicted Values'})
+            figure={
+                'data': [
+                    {
+                        'x': df[true_col],
+                        'y': df[predicted_col],
+                        'mode': 'markers',
+                        'type': 'scatter',
+                        'name': 'Data',
+                    },
+                    {
+                        'x': [-10, 10],
+                        'y': [-10, 10],
+                        'mode': 'lines',
+                        'name': 'y=x',
+                    },
+                ],
+                'layout': {
+                    'xaxis': {'title': 'True Values', 'range': [min(df[true_col]), max(df[true_col])]},
+                    'yaxis': {'title': 'Predicted Values', 'range': [min(df[predicted_col]), max(df[predicted_col])]},
+                    'aspectratio': {'x': 1, 'y': 2},  # Set 1:1 aspect ratio
+                },
+            }
         ),
         html.Div([
             html.Img(id='hover-image', src='', style={'height': '200px'})
@@ -60,5 +83,6 @@ def create_dash_dashboard(df, true_col, predicted_col):
             return f"data:image/png;base64,{encoded_images[index]}"
         return ""
 
-    if __name__ == '__main__':
-        app.run_server(debug=True)
+    # Run the Dash app in inline mode within the Jupyter Notebook
+    app.run_server(mode='inline')
+

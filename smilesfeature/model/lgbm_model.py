@@ -93,7 +93,8 @@ def train_lgbm(df, target_col, hyperparameter_tuning="off", param_grid={}):
     if is_cat:
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy on test set: {accuracy:.2f}")
-        sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, label='Scatter Plot', palette='Paired')
+        sns.set(style="whitegrid")  # Add gray grid
+        sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, label='Scatter Plot', palette='Paired', edgecolor=None) 
         plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2, label='y=x', color='gray')
         plt.xlabel('Actual')
         plt.ylabel('Predicted')
@@ -103,7 +104,8 @@ def train_lgbm(df, target_col, hyperparameter_tuning="off", param_grid={}):
     else:
         mse = mean_squared_error(y_test, y_pred)
         print(f"MSE on test set: {mse:.2f}")
-        sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, label='Scatter Plot', palette='Paired')
+        sns.set(style="whitegrid")
+        sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, label='Scatter Plot', palette='Paired', edgecolor=None) 
         plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2, label='y=x', color='gray')
         plt.xlabel('Actual')
         plt.ylabel('Predicted')
@@ -112,7 +114,8 @@ def train_lgbm(df, target_col, hyperparameter_tuning="off", param_grid={}):
 
         # Histogram with Seaborn
         plt.figure(figsize=(8, 6))
-        sns.histplot(y_test - y_pred, color='purple', alpha=0.5, kde=True, palette='Paired')
+        sns.set(style="whitegrid")
+        sns.histplot(y_test - y_pred, color='purple', alpha=0.5, kde=True, palette='Paired', edgecolor=None) 
         plt.xlabel(f"Actual - Predicted ({target_col})")
         plt.ylabel('Count')
         plt.title(f"Histogram of Residuals (Actual - Predicted)")
@@ -126,4 +129,4 @@ def train_lgbm(df, target_col, hyperparameter_tuning="off", param_grid={}):
 
     plt.show()
 
-    return model
+    return model, numeric_cols

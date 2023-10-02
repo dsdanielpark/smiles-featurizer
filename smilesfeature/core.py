@@ -1,38 +1,48 @@
+import joblib
 import os
+import pkg_resources
 import re
+import datamol as dm
 import numpy as np
 import pandas as pd
-import joblib
 from rdkit import Chem
 from sklearn.cluster import DBSCAN
 from gensim.models import Word2Vec
-import pkg_resources
-from smilesfeature.processor.mol2vec_processor import sentences2vec, mol2vec_feature
+
+from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
+from smilesfeature.processor.mol2vec_processor import (
+    calculate_and_add_ecfp_fingerprints,
+    calculate_and_add_maccs_fingerprints,
+    calculate_and_add_rdkit2d_descriptors,
+    mol2vec_feature,
+)
 from smilesfeature.processor.smiles_processor import (
-    add_molecule_from_smiles,
-    smiles_to_fp,
-    generate_3D_coordinates,
-    smiles_to_image_array,
     add_all_descriptors,
-    find_reactive_sites,
-    count_reactive_sites,
-    count_reaction_fragments,
-    add_reactive_groups,
-    generate_descriptor_functions,
-    apply_pca_to_dataframe,
     add_chem_properties,
+    add_molecule_from_smiles,
+    add_reactive_groups,
+    apply_pca_to_dataframe,
+    count_reaction_fragments,
+    count_reactive_sites,
     expand_reaction_sites,
+    extract_extra_features,
+    find_reactive_sites,
+    generate_3D_coordinates,
+    generate_chemical_properties,
+    generate_descriptor_functions,
     generate_chemical_properties,
     interpolate_missing_values,
     perform_pca_on_mol2vec,
-    extract_extra_features,
+    smiles_to_fp,
+    smiles_to_image_array,
+    add_descriptors_to_df,
 )
-from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
+
 
 data_path = pkg_resources.resource_filename('smilesfeature.data', 'model_300dim.pkl')
 
 
-def feature_generate(df, smiles_col="SMILES", method="simple"):
+def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):
     """
     Generate derived variables from SMILES in a DataFrame.
 
@@ -110,9 +120,18 @@ def feature_generate(df, smiles_col="SMILES", method="simple"):
     # Reaction Site expansion
     df = expand_reaction_sites(df)
 
-    # Optional additional features
-    if method == "more":
-        df = extract_extra_features(df)
-        df.drop(columns=["clogp", "mw", "tpsa"], inplace=True)
+    # Add datamol features
+    df = add_descriptors_to_df(df)
 
+    # Optional additional features
+    if method == "specific":
+        df = extract_extra_features(df)
+        
+        df = calculate_and_add_ecfp_fingerprints(df)
+        df = calculate_and_add_rdkit2d_descriptors(df)
+        df = calculate_and_add_maccs_fingerprints(df)
+
+    df = df.loc[:,~df.columns.duplicated()]
+    df.drop(columns=["clogp", "mw", "tpsa"], inplace=True)
+    
     return df
