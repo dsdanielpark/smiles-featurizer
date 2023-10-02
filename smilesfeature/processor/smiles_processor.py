@@ -540,6 +540,6 @@ def add_descriptors_to_df(df: pd.DataFrame):
             df.at[index, descriptor_name] = value
     
     # Drop the 'mol' and 'dm_descriptor_dict' columns if they are no longer needed
-    df.drop(['mol', 'dm_descriptor_dict'], axis=1, inplace=True)
+    # df.drop(['mol', 'dm_descriptor_dict'], axis=1, inplace=True)
     
     return df
