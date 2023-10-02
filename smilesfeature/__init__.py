@@ -20,6 +20,8 @@ from smilesfeature.processor.smiles_processor import (
     extract_extra_features,
 )
 from smilesfeature.core import feature_generate
+from smilesfeature.analysis.dash import create_dash_dashboard
+from smilesfeature.analysis.plotter import draw_corr, scatter_plot_dataframe
 from smilesfeature.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
@@ -27,6 +29,9 @@ from smilesfeature.constant import (
 )
 
 __all__ = [
+    "scatter_plot_dataframe",
+    "draw_corr",
+    "create_dash_dashboard",
     "feature_generate",
     "sentences2vec",
     "mol2vec_feature",

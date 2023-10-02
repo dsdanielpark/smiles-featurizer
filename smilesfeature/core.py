@@ -32,12 +32,12 @@ from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 data_path = pkg_resources.resource_filename('smilesfeature.data', 'model_300dim.pkl')
 
 
-def feature_generate(df, method="simple"):
+def feature_generate(df, smiles_col="SMILES", method="simple"):
     """
     Generate derived variables from SMILES in a DataFrame.
 
     Args:
-        df (pd.DataFrame): Input DataFrame containing a 'SMILES' column.
+        df (pd.DataFrame): Input DataFrame containing a smiles_col column.
         method (str, optional): Method for feature generation. Defaults to "simple".
 
     Returns:
@@ -45,7 +45,7 @@ def feature_generate(df, method="simple"):
 
     Example:
         >>> import pandas as pd
-        >>> data = {'SMILES': ['CCO', 'C1=CC=CC=C1', 'CCC']}
+        >>> data = {"SMILES": ['CCO', 'C1=CC=CC=C1', 'CCC']}
         >>> df = pd.DataFrame(data)
         >>> result_df = generate(df, method='more')
         >>> print(result_df.head())
@@ -53,18 +53,18 @@ def feature_generate(df, method="simple"):
     Note:
         This function performs a series of preprocessing, feature engineering,
         and chemical property calculation steps to generate derived features
-        from the 'SMILES' column in the input DataFrame.
+        from the smiles_col column in the input DataFrame. default is "SMILES".
     """
     mol2vec_model = Word2Vec.load(data_path)
     # Preprocessing steps
     df = interpolate_missing_values(df)
     df = add_molecule_from_smiles(df)
-    df["Mol"] = df["SMILES"].apply(Chem.MolFromSmiles)
+    df["Mol"] = df[smiles_col].apply(Chem.MolFromSmiles)
     df = generate_chemical_properties(df)
 
     # Feature Engineering steps
-    df["fingerprint"] = df["SMILES"].apply(smiles_to_fp)
-    df[["3D_Coordinates", "Mol2Vec", "image_array"]] = df["SMILES"].apply(
+    df["fingerprint"] = df[smiles_col].apply(smiles_to_fp)
+    df[["3D_Coordinates", "Mol2Vec", "image_array"]] = df[smiles_col].apply(
         lambda x: pd.Series(
             {
                 "3D_Coordinates": generate_3D_coordinates(x),
@@ -82,7 +82,7 @@ def feature_generate(df, method="simple"):
     # Chemical Property steps
     df = add_reactive_groups(df)
     df = add_all_descriptors(df)
-    df['Reactive_Sites'] = df['SMILES'].apply(lambda x: find_reactive_sites(Chem.MolFromSmiles(x)))
+    df['Reactive_Sites'] = df[smiles_col].apply(lambda x: find_reactive_sites(Chem.MolFromSmiles(x)))
     df["Reactive_Sites_Count"] = df["Molecule"].apply(count_reactive_sites)
     for site in [
         "Nitro_Reduction",
