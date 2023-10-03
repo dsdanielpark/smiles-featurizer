@@ -13,7 +13,7 @@ Development Status :: 3 - Alpha
 
 A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System)
 
-
+<br>
 
 ## Install
 ```
@@ -22,6 +22,7 @@ $ pip install smilesfeaturizer
 ```
 $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 ```
+<br>
 
 ## Usage 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
