@@ -79,7 +79,9 @@ def mol2vec_feature(smiles: str, mol2vec_model: Word2Vec) -> np.ndarray:
         return None
 
 
-def calculate_and_add_ecfp_fingerprints(df: pd.DataFrame, smiles_col: str='SMILES') -> pd.DataFrame:
+def calculate_and_add_ecfp_fingerprints(
+    df: pd.DataFrame, smiles_col: str = "SMILES"
+) -> pd.DataFrame:
     """
     Calculate ECFP fingerprints from the 'SMILES' column and add them as new columns to the DataFrame.
 
@@ -92,27 +94,28 @@ def calculate_and_add_ecfp_fingerprints(df: pd.DataFrame, smiles_col: str='SMILE
     """
     # Extract SMILES strings from the specified column
     data = df[smiles_col].values
-    
+
     # Initialize FPVecTransformer for 'ecfp:4'
     ecfp4 = FPVecTransformer("ecfp:4", dtype=np.float32)
-    
+
     # Calculate ECFP fingerprints for each SMILES string
     ecfp4_fingerprints = ecfp4(data)
-    
+
     # Define column names for the ECFP fingerprints
-    ecfp4_columns = [f'ecfp4_{i}' for i in range(ecfp4_fingerprints.shape[1])]
-    
+    ecfp4_columns = [f"ecfp4_{i}" for i in range(ecfp4_fingerprints.shape[1])]
+
     # Create a DataFrame from the calculated ECFP fingerprints
     ecfp4_df = pd.DataFrame(ecfp4_fingerprints, columns=ecfp4_columns)
-    
+
     # Concatenate the original DataFrame and the ECFP fingerprint DataFrame
     result_df = pd.concat([df, ecfp4_df], axis=1)
-    
+
     return result_df
 
 
-
-def calculate_and_add_rdkit2d_descriptors(df: pd.DataFrame, smiles_col: str='SMILES') -> pd.DataFrame:
+def calculate_and_add_rdkit2d_descriptors(
+    df: pd.DataFrame, smiles_col: str = "SMILES"
+) -> pd.DataFrame:
     """
     Calculate RDKit 2D descriptors from the 'SMILES' column and add them as new columns to the DataFrame.
 
@@ -125,30 +128,32 @@ def calculate_and_add_rdkit2d_descriptors(df: pd.DataFrame, smiles_col: str='SMI
     """
     # Extract SMILES strings from the specified column
     data = df[smiles_col].values
-    
+
     # Initialize the RDKit 2D descriptor calculator
     calc = RDKitDescriptors2D(replace_nan=True)
-    
+
     # Wrap the calculator in a transformer instance
     featurizer = MoleculeTransformer(calc, dtype=np.float64)
-    
+
     # Calculate RDKit 2D descriptors for each SMILES string
     with dm.without_rdkit_log():
         feats = featurizer(data)
-    
+
     # Define column names for the RDKit 2D descriptors
-    feature_names = [f'rdkit2d_{i}' for i in range(feats.shape[1])]
-    
+    feature_names = [f"rdkit2d_{i}" for i in range(feats.shape[1])]
+
     # Create a DataFrame from the calculated descriptors
     features_df = pd.DataFrame(feats, columns=feature_names)
-    
+
     # Concatenate the original DataFrame and the features DataFrame
     result_df = pd.concat([df, features_df], axis=1)
-    
+
     return result_df
 
 
-def calculate_and_add_maccs_fingerprints(df: pd.DataFrame, smiles_col: str = 'SMILES') -> pd.DataFrame:
+def calculate_and_add_maccs_fingerprints(
+    df: pd.DataFrame, smiles_col: str = "SMILES"
+) -> pd.DataFrame:
     """
     Calculate MACCS fingerprints from the 'SMILES' column and add them as new columns to the DataFrame.
 
@@ -161,20 +166,20 @@ def calculate_and_add_maccs_fingerprints(df: pd.DataFrame, smiles_col: str = 'SM
     """
     # Extract SMILES strings from the specified column
     data = df[smiles_col].values
-    
+
     # Initialize FPVecTransformer for 'maccs'
     maccs = FPVecTransformer("maccs", dtype=np.float32)
-    
+
     # Calculate MACCS fingerprints for each SMILES string
     maccs_fingerprints = maccs(data)
-    
+
     # Define column names for the MACCS fingerprints
-    maccs_columns = [f'maccs_{i}' for i in range(maccs_fingerprints.shape[1])]
-    
+    maccs_columns = [f"maccs_{i}" for i in range(maccs_fingerprints.shape[1])]
+
     # Create a DataFrame from the calculated MACCS fingerprints
     maccs_df = pd.DataFrame(maccs_fingerprints, columns=maccs_columns)
-    
+
     # Concatenate the original DataFrame and the MACCS fingerprint DataFrame
     result_df = pd.concat([df, maccs_df], axis=1)
-    
+
     return result_df

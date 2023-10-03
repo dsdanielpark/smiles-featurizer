@@ -39,7 +39,7 @@ from smilesfeaturizer.processor.smiles_processor import (
 )
 
 
-data_path = pkg_resources.resource_filename('smilesfeaturizer.data', 'model_300dim.pkl')
+data_path = pkg_resources.resource_filename("smilesfeaturizer.data", "model_300dim.pkl")
 
 
 def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):
@@ -83,8 +83,8 @@ def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):
             }
         )
     )
-    df = apply_pca_to_dataframe(df, '3D_Coordinates')
-    df['Mol2Vec'] = df['Mol2Vec'].apply(lambda x: x.reshape(-1))
+    df = apply_pca_to_dataframe(df, "3D_Coordinates")
+    df["Mol2Vec"] = df["Mol2Vec"].apply(lambda x: x.reshape(-1))
     df = perform_pca_on_mol2vec(df, n_components=3)
     df["Mol2Vec_mean"] = df["Mol2Vec"].apply(np.mean)
     df["Mol2Vec_std"] = df["Mol2Vec"].apply(np.std)
@@ -92,7 +92,9 @@ def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):
     # Chemical Property steps
     df = add_reactive_groups(df)
     df = add_all_descriptors(df)
-    df['Reactive_Sites'] = df[smiles_col].apply(lambda x: find_reactive_sites(Chem.MolFromSmiles(x)))
+    df["Reactive_Sites"] = df[smiles_col].apply(
+        lambda x: find_reactive_sites(Chem.MolFromSmiles(x))
+    )
     df["Reactive_Sites_Count"] = df["Molecule"].apply(count_reactive_sites)
     for site in [
         "Nitro_Reduction",
@@ -126,12 +128,12 @@ def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):
     # Optional additional features
     if method == "specific":
         df = extract_extra_features(df)
-        
+
         df = calculate_and_add_ecfp_fingerprints(df)
         df = calculate_and_add_rdkit2d_descriptors(df)
         df = calculate_and_add_maccs_fingerprints(df)
 
-    df = df.loc[:,~df.columns.duplicated()]
+    df = df.loc[:, ~df.columns.duplicated()]
     df.drop(columns=["clogp", "mw", "tpsa"], inplace=True)
-    
+
     return df

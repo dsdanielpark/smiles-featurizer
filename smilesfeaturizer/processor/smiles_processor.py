@@ -106,6 +106,7 @@ def smiles_to_image_array(smiles: str) -> np.ndarray:
     image_array = np.array(img)
     return image_array
 
+
 def _apply_pca(row, col_name):
     """
     Apply Principal Component Analysis (PCA) to a specific column in a DataFrame row.
@@ -129,7 +130,7 @@ def _apply_pca(row, col_name):
     """
     pca = PCA(n_components=3)
     transformed = pca.fit_transform(row[col_name])
-    new_col_names = [f'{col_name}_pc{i+1}' for i in range(3)]
+    new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
     return pd.Series(transformed.mean(axis=0), index=new_col_names)
 
 
@@ -176,16 +177,15 @@ def perform_pca_on_mol2vec(df, n_components=3):
         >>> df_pca = perform_pca_on_mol2vec(df, n_components=3)
         >>> print(df_pca.head())
     """
-    if 'Mol2Vec' not in df.columns:
+    if "Mol2Vec" not in df.columns:
         raise ValueError("'Mol2Vec' column must be present in the DataFrame.")
-    mol2vec_matrix = np.vstack(df['Mol2Vec'].values)
+    mol2vec_matrix = np.vstack(df["Mol2Vec"].values)
     pca = PCA(n_components=n_components)
     pca_result = pca.fit_transform(mol2vec_matrix)
     new_col_names = [f"Mol2Vec_pc{i+1}" for i in range(n_components)]
     df[new_col_names] = pd.DataFrame(pca_result, index=df.index)
     return df
 
-    
 
 def add_all_descriptors(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -403,30 +403,27 @@ def expand_reaction_sites(df: pd.DataFrame, max_pos: int = 30) -> pd.DataFrame:
     """
 
     new_columns = []
-    for reaction in df.loc[0, 'Reactive_Sites'].keys():
-        for positions in df.loc[0, 'Reactive_Sites'][reaction]:
+    for reaction in df.loc[0, "Reactive_Sites"].keys():
+        for positions in df.loc[0, "Reactive_Sites"][reaction]:
             if isinstance(positions, list):  # Check if positions is a list
                 for pos in positions:
                     if pos <= max_pos:
                         new_columns.append(f"{reaction}_{pos}")
-            
+
     df_new = pd.DataFrame(columns=new_columns)
     if len(new_columns) > 0:
         df_new.loc[0] = 0  # Initialize with zeros
-    for reaction, positions in df.loc[0, 'Reactive_Sites'].items():
+    for reaction, positions in df.loc[0, "Reactive_Sites"].items():
         for pos_tuple in positions:
             if isinstance(pos_tuple, list):  # Check if pos_tuple is a list
                 pos = pos_tuple[0]  # Extract the position from the tuple
                 if pos <= max_pos:
                     col_name = f"{reaction}_{pos}"
                     df_new.at[0, col_name] = 1
-                
+
     df = pd.concat([df, df_new], axis=1)
     df.fillna(0, inplace=True)
     return df
-
-
-
 
 
 def generate_chemical_properties(df: pd.DataFrame) -> pd.DataFrame:
@@ -522,21 +519,21 @@ def extract_extra_features(df: pd.DataFrame) -> pd.DataFrame:
 def add_descriptors_to_df(df: pd.DataFrame):
     # Convert SMILES strings to mol objects and store them in a new column 'mol'
     df["mol"] = df["SMILES"].apply(Chem.MolFromSmiles)
-    
+
     # Compute all descriptors for all molecules in one go
-    df['dm_descriptor_dict'] = df["mol"].apply(dm.descriptors.compute_many_descriptors)
-    
+    df["dm_descriptor_dict"] = df["mol"].apply(dm.descriptors.compute_many_descriptors)
+
     # Create new columns for each descriptor and set them to None
-    for descriptor_name in df['dm_descriptor_dict'].iloc[0].keys():
+    for descriptor_name in df["dm_descriptor_dict"].iloc[0].keys():
         df[descriptor_name] = None
-    
+
     # Iterate over rows and set descriptor values
     for index, row in df.iterrows():
-        dm_descriptor_dict = row['dm_descriptor_dict']
+        dm_descriptor_dict = row["dm_descriptor_dict"]
         for descriptor_name, value in dm_descriptor_dict.items():
             df.at[index, descriptor_name] = value
-    
+
     # Drop the 'mol' and 'dm_descriptor_dict' columns if they are no longer needed
     # df.drop(['mol', 'dm_descriptor_dict'], axis=1, inplace=True)
-    
+
     return df

@@ -47,7 +47,7 @@ setup(
         "dash",
         "datasets",
     ],
-    package_data={'smilesfeaturizer.data': ['*.pkl']},
+    package_data={"smilesfeaturizer.data": ["*.pkl"]},
     keywords="Python, SMILES, Cheminformatics, Molecular Informatics, Molecular Descriptor Generation, Chemical Data Analysis, Computational Chemistry",
     classifiers=[
         "Development Status :: 5 - Production/Stable",

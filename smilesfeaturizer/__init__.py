@@ -34,7 +34,10 @@ from smilesfeaturizer.constant import (
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,
 )
-from smilesfeaturizer.analysis.insight_plotter import calculate_error, smiles_insight_plot
+from smilesfeaturizer.analysis.insight_plotter import (
+    calculate_error,
+    smiles_insight_plot,
+)
 
 __all__ = [
     "train_lgbm",
@@ -69,7 +72,7 @@ __all__ = [
     "REACTION_CLASSES_TO_SMART_FRAGMENTS",
     "DATAMOL_FEATURES",
     "perform_pca_on_mol2vec",
-    "apply_pca_to_dataframe"
+    "apply_pca_to_dataframe",
 ]
 __version__ = "0.1.1"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"
