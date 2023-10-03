@@ -4,21 +4,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
+import numpy as np
 
 
-def calculate_error(true_col: pd.Series, predicted_col: pd.Series, metric: str) -> float:
+def calculate_error(true_col: np.ndarray, predicted_col: np.ndarray, metric: str) -> float:
     """
-    Calculate the error between true and predicted values using various metrics.
+    Calculate various evaluation metrics for regression and classification tasks.
 
     Parameters:
-        true_col (pd.Series): True values.
-        predicted_col (pd.Series): Predicted values.
-        metric (str): The metric to use for error calculation. Options are 'RMSE' (Root Mean Squared Error),
-            'MAE' (Mean Absolute Error), and 'R2' (R-squared).
+        true_col (np.ndarray): The true target values.
+        predicted_col (np.ndarray): The predicted target values.
+        metric (str): The evaluation metric to calculate. Options include 'RMSE', 'MAE', 'R2',
+            'Accuracy', 'Precision', 'Recall', 'F1', 'ROC_AUC', 'Confusion_Matrix'.
 
     Returns:
-        float: The calculated error value.
+        float: The calculated evaluation metric value.
+
+    Raises:
+        ValueError: If the metric is not recognized.
     """
     if metric == 'RMSE':
         return np.sqrt(mean_squared_error(true_col, predicted_col))
@@ -26,28 +30,43 @@ def calculate_error(true_col: pd.Series, predicted_col: pd.Series, metric: str) 
         return mean_absolute_error(true_col, predicted_col)
     elif metric == 'R2':
         return r2_score(true_col, predicted_col)
+    elif metric == 'Accuracy':
+        return accuracy_score(true_col, predicted_col)
+    elif metric == 'Precision':
+        return precision_score(true_col, predicted_col)
+    elif metric == 'Recall':
+        return recall_score(true_col, predicted_col)
+    elif metric == 'F1':
+        return f1_score(true_col, predicted_col)
+    elif metric == 'ROC_AUC':
+        return roc_auc_score(true_col, predicted_col)
+    elif metric == 'Confusion_Matrix':
+        return confusion_matrix(true_col, predicted_col)
     else:
-        return None
+        raise ValueError("Invalid metric. Supported metrics are 'RMSE', 'MAE', 'R2', 'Accuracy', "
+                         "'Precision', 'Recall', 'F1', 'ROC_AUC', 'Confusion_Matrix'.")
 
-def save_smiles_analysis_plot(df: pd.DataFrame, folder: str, true_col: str, predicted_col: str, metric: str, idx_start: int = 1):
+def smiles_insight_plot(df: pd.DataFrame, true_col: str, predicted_col: str, metric: str, folder: str, idx_start: int = 1, show: bool = False):
     """
     Generate and save analysis plots for SMILES data.
 
     Parameters:
         df (pd.DataFrame): The DataFrame containing the SMILES data and additional information.
-        folder (str): The folder where the analysis plots will be saved.
         true_col (str): The column name for the true values.
         predicted_col (str): The column name for the predicted values.
         metric (str): The metric to display in the plots. Options are 'RMSE' (Root Mean Squared Error),
             'MAE' (Mean Absolute Error), and 'R2' (R-squared).
+        folder (str): The folder where the analysis plots will be saved.
         idx_start (int, optional): The starting index for numbering saved plots (default is 1).
+        show (bool, optional): If True, display the plot for each iteration (default is False).
 
     Example usage:
         selected_metric = 'RMSE'  # Choose the error metric you want to display
         true_column = 'pIC50'  # Replace with your true column name
         predicted_column = 'predicted_pIC50'  # Replace with your predicted column name
-        save_smiles_analysis_plot(df[:1], 'output_folder', true_column, predicted_column, selected_metric)
+        save_smiles_analysis_plot(df[:1], true_column, predicted_column, 'output_folder', selected_metric)
     """
+    os.makedirs(folder, exist_ok=True)
     for idx, (index, row) in enumerate(df.iterrows(), start=idx_start):
         fig, axs = plt.subplots(1, 3, figsize=(18, 6), dpi=300)
 
@@ -83,4 +102,7 @@ def save_smiles_analysis_plot(df: pd.DataFrame, folder: str, true_col: str, pred
         # Save the figure
         plt.tight_layout()
         plt.savefig(f"{folder}/{idx}.jpg", dpi=300, bbox_inches='tight', pad_inches=0.1 )
+        # Show the plot if 'show' is True
+        if show:
+            plt.show()
         plt.clf()

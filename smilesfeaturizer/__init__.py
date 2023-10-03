@@ -1,11 +1,11 @@
 # Copyright 2023 Minwoo Park, Apache 2.0 License.
-from smilesfeature.processor.mol2vec_processor import (
+from smilesfeaturizer.processor.mol2vec_processor import (
     calculate_and_add_ecfp_fingerprints,
     calculate_and_add_maccs_fingerprints,
     calculate_and_add_rdkit2d_descriptors,
     mol2vec_feature,
 )
-from smilesfeature.processor.smiles_processor import (
+from smilesfeaturizer.processor.smiles_processor import (
     add_molecule_from_smiles,
     smiles_to_fp,
     generate_3D_coordinates,
@@ -25,18 +25,22 @@ from smilesfeature.processor.smiles_processor import (
     extract_extra_features,
     add_descriptors_to_df,
 )
-from smilesfeature.core import generate_smiles_feature
-from smilesfeature.analysis.dash import create_inline_dash_dashboard
-from smilesfeature.analysis.plotter import draw_corr, df_scatter_plot
-from smilesfeature.model.lgbm_model import train_lgbm
-from smilesfeature.constant import (
+from smilesfeaturizer.core import generate_smiles_feature
+from smilesfeaturizer.analysis.dash import create_inline_dash_dashboard
+from smilesfeaturizer.analysis.plotter import draw_corr, df_scatter_plot
+from smilesfeaturizer.model.lgbm_model import train_lgbm
+from smilesfeaturizer.constant import (
     ALL_REACTIVE_SITES,
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,
 )
+from smilesfeaturizer.analysis.insight_plotter import calculate_error, smiles_insight_plot
 
 __all__ = [
-    "add_descriptors_to_df"
+    "train_lgbm",
+    "smiles_insight_plot",
+    "calculate_error",
+    "add_descriptors_to_df",
     "calculate_and_add_ecfp_fingerprints",
     "calculate_and_add_maccs_fingerprints",
     "calculate_and_add_rdkit2d_descriptors",
@@ -67,5 +71,5 @@ __all__ = [
     "perform_pca_on_mol2vec",
     "apply_pca_to_dataframe"
 ]
-__version__ = "0.1.15"
+__version__ = "0.1.0"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"

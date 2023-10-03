@@ -9,14 +9,14 @@ from rdkit import Chem
 from sklearn.cluster import DBSCAN
 from gensim.models import Word2Vec
 
-from smilesfeature.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
-from smilesfeature.processor.mol2vec_processor import (
+from smilesfeaturizer.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
+from smilesfeaturizer.processor.mol2vec_processor import (
     calculate_and_add_ecfp_fingerprints,
     calculate_and_add_maccs_fingerprints,
     calculate_and_add_rdkit2d_descriptors,
     mol2vec_feature,
 )
-from smilesfeature.processor.smiles_processor import (
+from smilesfeaturizer.processor.smiles_processor import (
     add_all_descriptors,
     add_chem_properties,
     add_molecule_from_smiles,
@@ -39,7 +39,7 @@ from smilesfeature.processor.smiles_processor import (
 )
 
 
-data_path = pkg_resources.resource_filename('smilesfeature.data', 'model_300dim.pkl')
+data_path = pkg_resources.resource_filename('smilesfeaturizer.data', 'model_300dim.pkl')
 
 
 def generate_smiles_feature(df, smiles_col="SMILES", method="simple"):

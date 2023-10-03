@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 def get_version():
-    filename = "smilesfeature/__init__.py"
+    filename = "smilesfeaturizer/__init__.py"
     with open(filename) as f:
         match = re.search(r"""^__version__ = ['"]([^'"]*)['"]""", f.read(), re.M)
     if not match:
@@ -24,8 +24,8 @@ def get_long_description():
 version = get_version()
 
 setup(
-    name="smilesfeature",
-    version="0.1.15",
+    name="smilesfeaturizer",
+    version="0.1.0",
     author="daniel park",
     author_email="parkminwoo1991@gmail.com",
     description="A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System).",
@@ -45,7 +45,7 @@ setup(
         "datamol",
         "molfeat"
     ],
-    package_data={'smilesfeature.data': ['*.pkl']},
+    package_data={'smilesfeaturizer.data': ['*.pkl']},
     keywords="Python, SMILES, Cheminformatics, Molecular Informatics, Molecular Descriptor Generation, Chemical Data Analysis, Computational Chemistry",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
