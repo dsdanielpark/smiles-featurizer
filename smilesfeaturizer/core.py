@@ -8,7 +8,7 @@ import pandas as pd
 from rdkit import Chem
 from sklearn.cluster import DBSCAN
 from gensim.models import Word2Vec
-
+from rdkit import Chem, DataStructs
 from smilesfeaturizer.constant import REACTION_CLASSES_TO_SMILES_FRAGMENTS
 from smilesfeaturizer.processor.mol2vec_processor import (
     calculate_and_add_ecfp_fingerprints,

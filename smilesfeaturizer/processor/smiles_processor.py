@@ -14,9 +14,6 @@ from smilesfeaturizer.constant import (
     REACTION_CLASSES_TO_SMART_FRAGMENTS,
     DATAMOL_FEATURES,
 )
-import pandas as pd
-from rdkit import Chem
-from rdkit.Chem import Descriptors
 
 
 def add_molecule_from_smiles(df: pd.DataFrame) -> pd.DataFrame:
