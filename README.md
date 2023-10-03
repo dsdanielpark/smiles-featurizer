@@ -40,18 +40,6 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 
 <br>
 
-### Correlation heatmap
-- Using derived variables generated based on the SMILES notation, we compare three correlation scores and visualize the top 10 highly correlated features.
-- Similar to methodologies for calculating ELI5, SHAP values, or feature importance, this approach allows for a quick and straightforward assessment of multicollinearity and correlation from a data perspective.
-
-    ```python
-    from smilesfeaturizer import draw_corr
-
-    draw_corr(df, "pIC50")
-    ```
-
-<br>
-
 ### Create Dashboard 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
 - Researchers with domain knowledge can assess the prediction performance for specific molecules, identifying both good and poor performers, which can guide further modeling research.
