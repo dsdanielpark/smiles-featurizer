@@ -25,7 +25,7 @@ version = get_version()
 
 setup(
     name="smilesfeaturizer",
-    version="0.1.0",
+    version="0.1.1",
     author="daniel park",
     author_email="parkminwoo1991@gmail.com",
     description="A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System).",
@@ -37,13 +37,15 @@ setup(
     install_requires=[
         "numpy",
         "rdkit",
-        "gensim",
+        "gensim==4.3.2",
         "mol2vec",
         "pandas",
         "scikit-learn",
         "IPython",
         "datamol",
-        "molfeat"
+        "molfeat",
+        "dash",
+        "datasets",
     ],
     package_data={'smilesfeaturizer.data': ['*.pkl']},
     keywords="Python, SMILES, Cheminformatics, Molecular Informatics, Molecular Descriptor Generation, Chemical Data Analysis, Computational Chemistry",
