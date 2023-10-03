@@ -25,12 +25,9 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 
 ## Usage 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
-- The dataset assumes the presence of SMILES strings in a column named `SMILES`.
+The dataset assumes the presence of SMILES strings in a column named `SMILES`.
 ### Feature generation
 - Create fingerprint columns for SMILES representations based on various packages like RDKit, Mol2Vec, DataMol, MolFeat, sklearn, etc.
-- Generate various derived variables to enable ML expansion.
-- By default, it uses the 'simple' method, but if you provide the 'specific' argument, it creates various functions based on MACCS, FPVec, ECFP, and RDKit 2D descriptors, represented with suffixes like 'ecfp_'.
-- You can vectorize the given SMILES string based on various derived variables, and they are created as columns with one-hot encoding for ML suitability.
 
     ```python
     from smilesfeaturizer import generate_smiles_feature
@@ -38,11 +35,8 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
     df = generate_smiles_feature(df) # default method="simple"
     ```
 
-<br>
-
 ### Create Dashboard 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
-- Researchers with domain knowledge can assess the prediction performance for specific molecules, identifying both good and poor performers, which can guide further modeling research.
 
     ```python
     from smilesfeaturizer import create_inline_dash_dashboard
@@ -55,11 +49,8 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
     create_inline_dash_dashboard(df, true_col, predicted_col)
     ```
 
-<br>
-
 ### Save reporting images
 - Molecular images, basic information, and the prediction versus actual values are visually represented in bar graphs for easy viewing.
-- If a storage path is provided, these images can be saved for later examination. Researchers can use this as a basis to collect additional features and determine the direction of modeling.
     ```python
     from smilesfeaturizer import smiles_insight_plot
 
