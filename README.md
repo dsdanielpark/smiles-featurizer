@@ -4,7 +4,7 @@ Development Status :: 3 - Alpha
 # SMILES featurizer
 
 <p align="left">
-<a href="https://github.com/dsdanielpark/SMILES-featurizer"><img alt="PyPI package" src="https://img.shields.io/badge/pypi-SMILESfeaturizer-black"></a>
+<a href="https://github.com/dsdanielpark/SMILES-featurizer"><img alt="PyPI package" src="https://img.shields.io/badge/pypi-SMILES featurizer-black"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fdsdanielpark%2FSMILES-featurizer&count_bg=%23000000&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
 <a href="https://github.com/dsdanielpark/SMILES-featurizer/stargazers"><img src="https://img.shields.io/github/stars/dsdanielpark/SMILES-featurizer?style=social"></a>
@@ -38,6 +38,8 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
     df = generate_smiles_feature(df) # default method="simple"
     ```
 
+<br>
+
 ### Correlation heatmap
 - Using derived variables generated based on the SMILES notation, we compare three correlation scores and visualize the top 10 highly correlated features.
 - Similar to methodologies for calculating ELI5, SHAP values, or feature importance, this approach allows for a quick and straightforward assessment of multicollinearity and correlation from a data perspective.
@@ -47,6 +49,8 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 
     draw_corr(df, "pIC50")
     ```
+
+<br>
 
 ### Create Dashboard 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
@@ -63,7 +67,11 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
     create_inline_dash_dashboard(df, true_col, predicted_col)
     ```
 
+<br>
+
 ### Save reporting images
+- Molecular images, basic information, and the prediction versus actual values are visually represented in bar graphs for easy viewing.
+- If a storage path is provided, these images can be saved for later examination. Researchers can use this as a basis to collect additional features and determine the direction of modeling.
     ```python
     from smilesfeaturizer import smiles_insight_plot
 
