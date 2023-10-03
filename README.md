@@ -56,9 +56,9 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`.
     from smilesfeaturizer import smiles_insight_plot
 
     selected_metric = 'RMSE'  # Choose the error metric you want to display
-    true_column = 'pIC50'  # Replace with your true column name
-    predicted_column = 'predicted_pIC50'  # Replace with your predicted column name
-    smiles_insight_plot(df[:1], true_column, predicted_column, selected_metric, 'output_folder', show=True)
+    true_col = 'pIC50'  # Replace with your true column name
+    predicted_col = 'predicted_pIC50'  # Replace with your predicted column name
+    smiles_insight_plot(df[:1], true_col, predicted_col, selected_metric, 'output_folder', show=True)
     ```
 
 <br>
