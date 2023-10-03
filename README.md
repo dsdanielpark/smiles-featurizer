@@ -24,6 +24,7 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 ```
 
 ## Usage 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
 - The dataset assumes the presence of SMILES strings in a column named `SMILES`.
 ### Feature generation
 - Create fingerprint columns for SMILES representations based on various packages like RDKit, Mol2Vec, DataMol, MolFeat, sklearn, etc.
@@ -31,51 +32,48 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 - By default, it uses the 'simple' method, but if you provide the 'specific' argument, it creates various functions based on MACCS, FPVec, ECFP, and RDKit 2D descriptors, represented with suffixes like 'ecfp_'.
 - You can vectorize the given SMILES string based on various derived variables, and they are created as columns with one-hot encoding for ML suitability.
 
-```python
-from smilesfeaturizer import generate_smiles_feature
+    ```python
+    from smilesfeaturizer import generate_smiles_feature
 
-df = generate_smiles_feature(df) # default method="simple"
-```
+    df = generate_smiles_feature(df) # default method="simple"
+    ```
 
 ### Correlation heatmap
 - Using derived variables generated based on the SMILES notation, we compare three correlation scores and visualize the top 10 highly correlated features.
 - Similar to methodologies for calculating ELI5, SHAP values, or feature importance, this approach allows for a quick and straightforward assessment of multicollinearity and correlation from a data perspective.
 
-```python
-from smilesfeaturizer import draw_corr
+    ```python
+    from smilesfeaturizer import draw_corr
 
-draw_corr(df, "pIC50")
-```
+    draw_corr(df, "pIC50")
+    ```
 
 ### Create Dashboard 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
 - Researchers with domain knowledge can assess the prediction performance for specific molecules, identifying both good and poor performers, which can guide further modeling research.
 
-```python
-from smilesfeaturizer import create_inline_dash_dashboard
+    ```python
+    from smilesfeaturizer import create_inline_dash_dashboard
 
-# Load your DataFrame and specify the columns
-true_col = 'pIC50'
-predicted_col = 'predicted_pIC50'
+    # Load your DataFrame and specify the columns
+    true_col = 'pIC50'
+    predicted_col = 'predicted_pIC50'
 
-# Create and run the Dash dashboard
-create_inline_dash_dashboard(df, true_col, predicted_col)
-```
+    # Create and run the Dash dashboard
+    create_inline_dash_dashboard(df, true_col, predicted_col)
+    ```
 
 ### Save reporting images
-```
-from smilesfeaturizer import smiles_insight_plot
+    ```python
+    from smilesfeaturizer import smiles_insight_plot
 
-selected_metric = 'RMSE'  # Choose the error metric you want to display
-true_column = 'pIC50'  # Replace with your true column name
-predicted_column = 'predicted_pIC50'  # Replace with your predicted column name
-smiles_insight_plot(df[:1], true_column, predicted_column, selected_metric, 'output_folder', show=True)
-```
+    selected_metric = 'RMSE'  # Choose the error metric you want to display
+    true_column = 'pIC50'  # Replace with your true column name
+    predicted_column = 'predicted_pIC50'  # Replace with your predicted column name
+    smiles_insight_plot(df[:1], true_column, predicted_column, selected_metric, 'output_folder', show=True)
+    ```
 
-
-## Scripts
-In the scripts [folder](./scripts/), I have released a script to help you compare [OpenAI-ChatGPT](./scripts/openai_api.ipynb), [Microsoft-EdgeGPT](./scripts/microsoft_api.ipynb) and [Google-Bard](./scripts/google_api.ipynb). I hope they will help more developers.
-
+<br>
 
 ## License
 [Apache 2.0](https://opensource.org/license/apache-2-0/) <br>
@@ -88,5 +86,6 @@ Sincerely grateful for any reports on new features or bugs. Your valuable feedba
 - Core maintainer: [Daniel Park, South Korea](https://github.com/DSDanielPark) <br>
 - E-mail: parkminwoo1991@gmail.com <br>
 
+<br>
 
 *Copyright (c) 2023 MinWoo Park, South Korea*<br>
