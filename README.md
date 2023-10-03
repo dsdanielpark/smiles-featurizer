@@ -24,8 +24,7 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 ```
 <br>
 
-## Usage 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
+## Usage [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
 The dataset assumes the presence of SMILES strings in a column named `SMILES`.
 ### Feature generation
 - Create fingerprint columns for SMILES representations based on various packages like RDKit, Mol2Vec, DataMol, MolFeat, sklearn, etc.
@@ -36,7 +35,7 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`.
     df = generate_smiles_feature(df) # default method="simple"
     ```
 
-### Create Dashboard 
+### Create dashboard 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
 
     ```python
