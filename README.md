@@ -60,6 +60,8 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`.
     smiles_insight_plot(df[:1], true_col, predicted_col, selected_metric, 'output_folder', show=True)
     ```
 
+    ![](./output_folder/1.jpg)
+
 <br>
 
 ## License
