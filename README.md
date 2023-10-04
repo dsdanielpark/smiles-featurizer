@@ -7,7 +7,6 @@ Development Status :: 3 - Alpha
 <a href="https://github.com/dsdanielpark/SMILES-featurizer"><img alt="PyPI package" src="https://img.shields.io/badge/pypi-SMILES featurizer-black"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fdsdanielpark%2FSMILES-featurizer&count_bg=%23000000&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
-<a href="https://github.com/dsdanielpark/SMILES-featurizer/stargazers"><img src="https://img.shields.io/github/stars/dsdanielpark/SMILES-featurizer?style=social"></a>
 <a href="https://pypi.org/project/smilesfeaturizer/"><img alt="PyPI" src="https://img.shields.io/pypi/v/smilesfeaturizer"></a>
 </p>
 
