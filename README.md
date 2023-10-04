@@ -15,7 +15,7 @@ A Python package that automatically generates derived variables from a column wi
 ![](./assets/smilesfeaturizer.gif)
 
 
-The python package, SMILES Featurizer helps quickly and painlessly explore the baseline and key features for many projects that use SMILES strings. It's still in the development phase, and there are some errors with certain SMILES strings due to dependencies in the package. There are no scheduled regular updates, and we welcome free pull requests at any time.
+The python package, SMILES Featurizer helps quickly and painlessly explore the baseline and key features for many projects that use SMILES strings. It's still in the development phase, and there are some errors with certain SMILES strings due to dependencies in the package. There are no scheduled regular updates, and I welcome pull requests at any time. *I intentionally did not encapsulate it highly as a class, and I maintain it in the form of functions. This is because it is based on the processing of a single data frame and because the service is highly likely to be modified.*
 
 <br>
 
