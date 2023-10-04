@@ -29,7 +29,7 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 <br>
 
 ## Usage [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
-The dataset assumes the presence of SMILES strings in a column named `SMILES`. See [tutorial notebook](https://github.com/dsdanielpark/SMILES-featurizer/blob/main/tutorial.ipynb).
+The dataset assumes the presence of SMILES strings in a column named SMILES. See [tutorial notebook](https://github.com/dsdanielpark/SMILES-featurizer/blob/main/tutorial.ipynb).
 ### *Feature generation*
 - Create fingerprint columns for SMILES representations based on various packages [RDKit](https://www.rdkit.org/), [Mol2Vec](https://github.com/samoturk/mol2vec), [DataMol](https://github.com/datamolorg/datamol), [MolFeat](https://github.com/cplassier/molfeat), [Scikit-Learn](https://scikit-learn.org/stable/).
 
