@@ -33,6 +33,8 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`.
     from smilesfeaturizer import generate_smiles_feature
 
     df = generate_smiles_feature(df) # default method="simple"
+
+    df = generate_smiles_feature(df, method="specific") 
     ```
 
 ### Create dashboard 
@@ -59,8 +61,6 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`.
     predicted_col = 'predicted_pIC50'  # Replace with your predicted column name
     smiles_insight_plot(df[:1], true_col, predicted_col, selected_metric, 'output_folder', show=True)
     ```
-
-    ![](./output_folder/1.jpg)
 
 <br>
 
