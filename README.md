@@ -10,7 +10,7 @@ Development Status :: 3 - Alpha
 <a href="https://pypi.org/project/smilesfeaturizer/"><img alt="PyPI" src="https://img.shields.io/pypi/v/smilesfeaturizer"></a>
 </p>
 
-A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System)
+A Python package that automatically generates derived feature variables from a column with SMILES (Simplified Molecular-Input Line-Entry System)
 
 ![](./assets/smilesfeaturizer.gif)
 
