@@ -107,7 +107,6 @@ def smiles_to_image_array(smiles: str) -> np.ndarray:
     return image_array
 
 
-
 def _apply_pca(row: pd.Series, col_name: str) -> pd.Series:
     """
     Apply Principal Component Analysis (PCA) to a specific column in a DataFrame row.
@@ -137,8 +136,11 @@ def _apply_pca(row: pd.Series, col_name: str) -> pd.Series:
         new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
         return pd.Series(transformed.mean(axis=0), index=new_col_names)
     except Exception as e:
-        print(f"Error occurred for row with col_name '{col_name}' and values: {row.values[:5]}")
+        print(
+            f"Error occurred for row with col_name '{col_name}' and values: {row.values[:5]}"
+        )
         return pd.Series([None] * 3, index=new_col_names)
+
 
 def apply_pca_to_dataframe(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
     """
@@ -162,7 +164,9 @@ def apply_pca_to_dataframe(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
         >>> print(df_pca.head())
     """
     new_columns = df.apply(lambda row: _apply_pca(row, col_name), axis=1)
-    dropped_rows = df[~df.index.isin(new_columns.dropna(subset=new_columns.columns, how='all').index)]
+    dropped_rows = df[
+        ~df.index.isin(new_columns.dropna(subset=new_columns.columns, how="all").index)
+    ]
     for index, row in dropped_rows.head().iterrows():
         print(f"Dropped Index: {index}\nDropped Row Values (first 5): {row.values[:5]}")
 
