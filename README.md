@@ -15,7 +15,7 @@ A Python package that automatically generates derived feature variables from a c
 ![](./assets/smilesfeaturizer.gif)
 
 
-The python package, SMILES Featurizer helps quickly and painlessly explore the baseline and key features for many projects that use SMILES strings. It's still in the development phase, and there are some errors with certain SMILES strings due to dependencies in the package. There are no scheduled regular updates, and I welcome pull requests at any time. *I intentionally did not encapsulate it highly as a class, and I maintain it in the form of functions. This is because it is based on the processing of a single data frame and because the service is highly likely to be modified.*
+The python package, SMILES Featurizer helps quickly and painlessly explore the baseline and key features for many projects that use SMILES strings. In some cases, there may be duplicate columns among the columns created by the specific method. Clean and use some of the columns in the generated data frame. *I intentionally did not encapsulate it highly as a class, and I maintain it in the form of functions. This is because it is based on the processing of a single data frame and because the service is highly likely to be modified.*
 
 <br>
 
