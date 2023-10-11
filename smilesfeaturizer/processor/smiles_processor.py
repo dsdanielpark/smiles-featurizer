@@ -130,10 +130,10 @@ def _apply_pca(row: pd.Series, col_name: str) -> pd.Series:
         >>> transformed_values = _apply_pca(sample_row, col_name='feature1')
         >>> print(transformed_values)
     """
+    new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
     try:
         pca = PCA(n_components=3)
         transformed = pca.fit_transform(row[col_name])
-        new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
         return pd.Series(transformed.mean(axis=0), index=new_col_names)
     except Exception as e:
         print(
