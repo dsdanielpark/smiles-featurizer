@@ -10,9 +10,12 @@ Development Status :: 3 - Alpha
 <a href="https://pypi.org/project/smilesfeaturizer/"><img alt="PyPI" src="https://img.shields.io/pypi/v/smilesfeaturizer"></a>
 </p>
 
+A Python package that automatically generates derived feature variables from a column with SMILES (Simplified Molecular-Input Line-Entry System)
+
 ![](./assets/smilesfeaturizer.gif)
 
-A Python package that automatically generates derived variables from a column with SMILES (Simplified Molecular-Input Line-Entry System)
+
+The python package, SMILES Featurizer helps quickly and painlessly explore the baseline and key features for many projects that use SMILES strings. It's still in the development phase, and there are some errors with certain SMILES strings due to dependencies in the package. There are no scheduled regular updates, and I welcome pull requests at any time. *I intentionally did not encapsulate it highly as a class, and I maintain it in the form of functions. This is because it is based on the processing of a single data frame and because the service is highly likely to be modified.*
 
 <br>
 
@@ -26,8 +29,8 @@ $ pip install git+https://github.com/dsdanielpark/SMILES-featurizer.git
 <br>
 
 ## Usage [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1BHTtOEvl577FyrQ5kLK-yJ9h9EDVUvGg/view?usp=sharing) 
-The dataset assumes the presence of SMILES strings in a column named `SMILES`. See [tutorial notebook](https://github.com/dsdanielpark/SMILES-featurizer/blob/main/tutorial.ipynb).
-### Feature generation
+The dataset assumes the presence of SMILES strings in a column named SMILES. See [tutorial notebook](https://github.com/dsdanielpark/SMILES-featurizer/blob/main/tutorial.ipynb).
+### *Feature generation*
 - Create fingerprint columns for SMILES representations based on various packages [RDKit](https://www.rdkit.org/), [Mol2Vec](https://github.com/samoturk/mol2vec), [DataMol](https://github.com/datamolorg/datamol), [MolFeat](https://github.com/cplassier/molfeat), [Scikit-Learn](https://scikit-learn.org/stable/).
 
     ```python
@@ -38,7 +41,7 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`. S
     df = generate_smiles_feature(df, method="specific") 
     ```
 
-### Create dashboard 
+### *Create dashboard* 
 - Through the dashboard, you can determine which compounds exhibit what prediction performance. 
 
     ```python
@@ -52,7 +55,7 @@ The dataset assumes the presence of SMILES strings in a column named `SMILES`. S
     create_inline_dash_dashboard(df, true_col, predicted_col)
     ```
 
-### Save reporting images
+### *Save reporting images*
 - Molecular images, basic information, and the prediction versus actual values are visually represented in bar graphs for easy viewing.
     ```python
     from smilesfeaturizer import smiles_insight_plot
