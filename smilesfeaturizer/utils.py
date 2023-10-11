@@ -94,24 +94,20 @@ def draw_correlations(
     """
     df_numeric = df.select_dtypes(include=["number"])
 
-    # Columns to drop (those with a single dominant value)
     drop_columns = []
     for col in df_numeric.columns:
         most_frequent = df_numeric[col].value_counts().idxmax()
         if (df_numeric[col] == most_frequent).mean() >= 0.9:
             drop_columns.append(col)
-
-    # Remove columns with dominant values
+            
     df_filtered = df_numeric.drop(columns=drop_columns)
-
-    # Calculate correlations with 'target_col'
     correlations_target = {}
+
     for method in methods:
         corr_series = df_filtered.corrwith(df_filtered[target_col], method=method)
         top_correlations = corr_series.abs().nlargest(num_top_features)
         correlations_target[method] = top_correlations
 
-    # Draw correlation heatmaps for 'target_col'
     for method, top_correlations in correlations_target.items():
         plt.figure(figsize=(10, 10))
         corr_matrix = df_filtered[top_correlations.index].corr(method=method)
