@@ -74,5 +74,5 @@ __all__ = [
     "perform_pca_on_mol2vec",
     "apply_pca_to_dataframe",
 ]
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __author__ = "daniel park <parkminwoo1991@gmail.com>"

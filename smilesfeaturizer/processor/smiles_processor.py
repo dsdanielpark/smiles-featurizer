@@ -107,7 +107,8 @@ def smiles_to_image_array(smiles: str) -> np.ndarray:
     return image_array
 
 
-def _apply_pca(row, col_name):
+
+def _apply_pca(row: pd.Series, col_name: str) -> pd.Series:
     """
     Apply Principal Component Analysis (PCA) to a specific column in a DataFrame row.
 
@@ -117,6 +118,8 @@ def _apply_pca(row, col_name):
 
     Returns:
         pd.Series: A Series containing the PCA-transformed values.
+
+    If an error occurs during PCA, a Series containing None values is returned.
 
     Example:
         >>> import pandas as pd
@@ -128,13 +131,16 @@ def _apply_pca(row, col_name):
         >>> transformed_values = _apply_pca(sample_row, col_name='feature1')
         >>> print(transformed_values)
     """
-    pca = PCA(n_components=3)
-    transformed = pca.fit_transform(row[col_name])
-    new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
-    return pd.Series(transformed.mean(axis=0), index=new_col_names)
+    try:
+        pca = PCA(n_components=3)
+        transformed = pca.fit_transform(row[col_name])
+        new_col_names = [f"{col_name}_pc{i+1}" for i in range(3)]
+        return pd.Series(transformed.mean(axis=0), index=new_col_names)
+    except Exception as e:
+        print(f"Error occurred for row with col_name '{col_name}' and values: {row.values[:5]}")
+        return pd.Series([None] * 3, index=new_col_names)
 
-
-def apply_pca_to_dataframe(df, col_name):
+def apply_pca_to_dataframe(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
     """
     Apply Principal Component Analysis (PCA) to a specific column in a DataFrame and add the PCA-transformed components as new columns.
 
@@ -145,6 +151,8 @@ def apply_pca_to_dataframe(df, col_name):
     Returns:
         pd.DataFrame: A DataFrame with PCA-transformed columns added.
 
+    Rows with errors during PCA are removed from the output DataFrame.
+
     Example:
         >>> import pandas as pd
         >>> from sklearn.decomposition import PCA
@@ -154,10 +162,14 @@ def apply_pca_to_dataframe(df, col_name):
         >>> print(df_pca.head())
     """
     new_columns = df.apply(lambda row: _apply_pca(row, col_name), axis=1)
+    dropped_rows = df[~df.index.isin(new_columns.dropna(subset=new_columns.columns, how='all').index)]
+    for index, row in dropped_rows.head().iterrows():
+        print(f"Dropped Index: {index}\nDropped Row Values (first 5): {row.values[:5]}")
+
     return pd.concat([df, new_columns], axis=1)
 
 
-def perform_pca_on_mol2vec(df, n_components=3):
+def perform_pca_on_mol2vec(df: pd.DataFrame, n_components: int = 3) -> pd.DataFrame:
     """
     Perform Principal Component Analysis (PCA) on the 'Mol2Vec' column in a DataFrame and add the PCA-transformed components as new columns.
 
