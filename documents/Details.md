@@ -3,14 +3,6 @@ Development Status :: 3 - Alpha
 
 # SMILES featurizer
 
-## Feature generation
-- Create fingerprint columns for SMILES representations based on various packages like RDKit, Mol2Vec, DataMol, MolFeat, sklearn, etc.
-
-    ```python
-    from smilesfeaturizer import generate_smiles_feature
-
-    df = generate_smiles_feature(df) # default method="simple"
-    ```
 
 
 | Reaction Class                                           | Drug Substrates                               |
@@ -37,6 +29,16 @@ Development Status :: 3 - Alpha
 | S-Oxidation                                              | Thioridazine, Cimetidine, Chlorpromazine       |
 | Deamination                                              | Amphetamine, Diazepam                          |
 | Desulfuration                                            | Thiopental                                    |
+
+
+## Feature generation
+- Create fingerprint columns for SMILES representations based on various packages like RDKit, Mol2Vec, DataMol, MolFeat, sklearn, etc.
+
+    ```python
+    from smilesfeaturizer import generate_smiles_feature
+
+    df = generate_smiles_feature(df) # default method="simple"
+    ```
 
 
 ## Create dashboard 
